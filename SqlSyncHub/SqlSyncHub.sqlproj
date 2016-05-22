@@ -114,5 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SqlSyncHub.publish.xml" />
+    <None Include="SqlSyncHub.md" />
   </ItemGroup>
 </Project>
