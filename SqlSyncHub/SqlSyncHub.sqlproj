@@ -115,6 +115,6 @@
   <ItemGroup>
     <None Include="SqlSyncHub.publish.xml" />
     <None Include="SqlSyncHub.md" />
-    <None Include="README.md" />
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>
