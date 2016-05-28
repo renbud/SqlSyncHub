@@ -93,7 +93,7 @@
     <Build Include="Stored Procedures\GetMetadata.sql" />
     <Build Include="Stored Procedures\GetObjectMetadata.sql" />
     <Build Include="Stored Procedures\RunViewOnDatabase.sql" />
-    <Build Include="Stored Procedures\usp_RethrowError.sql" />
+    <Build Include="Stored Procedures\RethrowError.sql" />
     <Build Include="Stored Procedures\CopyAzureTable.sql" />
     <Build Include="Stored Procedures\AzureMain.sql" />
     <Build Include="Stored Procedures\ReconcileTables.sql" />
@@ -117,5 +117,8 @@
     <None Include="SqlSyncHub.publish.xml" />
     <None Include="Wiki.md" />
     <None Include="..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="SqlSyncHub.refactorlog" />
   </ItemGroup>
 </Project>

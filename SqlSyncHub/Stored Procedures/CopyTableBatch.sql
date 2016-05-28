@@ -142,7 +142,7 @@ BEGIN
 	END TRY
 	BEGIN CATCH
 		DECLARE @Msg nvarchar(4000) = left(@SQLString,4000)
-		EXEC SqlSyncInternal.usp_RethrowError @Msg;
+		EXEC SqlSyncInternal.[RethrowError] @Msg;
 	END CATCH
 	PRINT 'Finished copy...';
 END

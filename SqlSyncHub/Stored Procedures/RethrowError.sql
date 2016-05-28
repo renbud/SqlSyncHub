@@ -1,6 +1,6 @@
 ﻿
 
-CREATE PROCEDURE [SqlSyncInternal].[usp_RethrowError]
+CREATE PROCEDURE [SqlSyncInternal].[RethrowError]
 	@Message NVARCHAR(4000) = NULL
 AS
 	-- Generate an error using RAISERROR.

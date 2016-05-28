@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="82b82462-0dfa-4b7a-939f-b91cce43e753" ChangeDateTime="05/28/2016 14:16:29">
+    <Property Name="ElementName" Value="[SqlSyncInternal].[usp_RethrowError]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[SqlSyncInternal]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[RethrowError]" />
+  </Operation>
+</Operations>

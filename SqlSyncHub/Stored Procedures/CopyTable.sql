@@ -347,7 +347,7 @@ BEGIN
 		WHERE TargetTable = @TargetTable;
 
 		--THROW;
-	    EXEC SqlSyncInternal.usp_RethrowError;
+	    EXEC SqlSyncInternal.[RethrowError];
 	    RETURN 1;
 	END CATCH
 END
