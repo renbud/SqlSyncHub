@@ -100,7 +100,8 @@ BEGIN
 		VALUES	( @SourceTable, @TargetTable, 'Insert', @RowsAffected);
 	END TRY
 	BEGIN CATCH
-		EXEC SqlSyncInternal.usp_RethrowError @SQLString;
+		DECLARE @Msg NVARCHAR(4000) = left(@SQLString);
+		EXEC SqlSyncInternal.usp_RethrowError @Msg;
 	END CATCH
 END
 

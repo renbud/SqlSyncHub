@@ -26,6 +26,7 @@
     <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
     <Recovery>SIMPLE</Recovery>
+    <IncludeSchemaNameInFileName>True</IncludeSchemaNameInFileName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -114,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SqlSyncHub.publish.xml" />
-    <None Include="SqlSyncHub.md" />
+    <None Include="Wiki.md" />
     <None Include="..\README.md" />
   </ItemGroup>
 </Project>

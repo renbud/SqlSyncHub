@@ -90,7 +90,7 @@ BEGIN
 	-- SELECT @screate;
 	EXEC sp_executesql @sCreate, N'@TargetDatabase sysname, @create nvarchar(max) output', @TargetDatabase, @Create OUTPUT
   
-	IF (@Create LIKE '%ALTER TABLE%')
+	IF (@Create LIKE N'%ALTER TABLE%')
 	BEGIN
 		DELETE FROM SqlSync.ForeignKeyScript WHERE DatabaseName = @TargetDatabase;
 		INSERT SqlSync.ForeignKeyScript(DatabaseName, DropScript, CreateScript)
@@ -105,5 +105,5 @@ BEGIN
 			   1 -- State
 			   );   
 	END  
-	SELECT * FROM SqlSync.ForeignKeyScript;
+	SELECT DatabaseName, DropScript, CreateScript FROM SqlSync.ForeignKeyScript;
 END

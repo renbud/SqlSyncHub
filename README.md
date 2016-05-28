@@ -3,8 +3,9 @@ SQL Server synchronization framework.
 
 Keywords (replication , synchronisation, SQL Server)
 
-This repository contains a database project that supports simple replication between SQL Servers.
-The database is installed on the target server. There is no software required on the source server apart from SQL Server. The SqlSyncHub database is quite small. It contains about 30 objects, mostly procedures, functions and views. There are a few tables containing logs and cached metadata.
+This repository contains a small database with stored procedures that supports simple replication between SQL Servers.
+The database is installed on the target server.
+There is no software required on the source server apart from SQL Server.
 
 Synopsis
 ========

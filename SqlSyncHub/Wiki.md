@@ -1,43 +1,38 @@
 Overview
 ========
-SQL Sync Hub is a framework for copying data from a source table to a target table.
+SQL Sync Hub is a framework for copying data from one SQL Server database to another.
 
 It can be used as an alternative to replication in cases where the replication agents cannot be configured, or where a simple framework with open source code is preferred.
 
-The framework is used by calling the CopyTable procedure for each table to be synchronised or copied. This replaces all data in the target table by default, but if the source table contains a rowversion (timestamp) column then an incremental *upsert* is performed. In order to keep things simple, CopyTable automatically copies columns wherever the source column name matches the target. There is no way to provide alternate column matching.
+The framework is used by calling the _SqlSync.CopyTable_ procedure for each table to be synchronised or copied. This replaces all data in the target table by default, but if the source table contains a rowversion (timestamp) column then an incremental *upsert* is performed. In order to keep things simple, _CopyTable_ automatically copies columns wherever the source column name matches the target. There is no way to provide alternate column matching.
 
-The framework is delivered in a SQL Server database that is installed on the target SQL Server. This database contains the CopyTable procedure as well as supporting procedures, functions and views.
+The framework is delivered in a SQL Server database that is installed on the target SQL Server. This database contains the _CopyTable_ procedure as well as supporting procedures, functions and views.
 
 Synopsis
 ========
 
-To copy a table’s data from a source to a target table, call the procedure SqlSync.CopyTable as follows:
+To copy a table’s data from a source to a target table, call the procedure _SqlSync.CopyTable_ as follows:
 
-```
-EXEC SqlSync.CopyTable
-     @SourceTable = @SourceTable2or3or4PartName, @TargetTable = @TargetTable2Or3PartName
-```
+    EXEC SqlSync.CopyTable
+         @SourceTable = @SourceTable2or3or4PartName, @TargetTable = @TargetTable2Or3PartName
 
-Architecture
-============
+# Architecture
 
-Why use SQL Sync Hub
---------------------
+##Why use SQL Sync Hub
 
 Copying data from one table to another is a very common requirement, and there are many existing solutions. So why use SQL Sync Hub?
 
--   ### Zero Footprint on Source
+-   **Zero Footprint on Source**
 
 Solutions such as replication and solutions based on change tracking or change data capture require log reading agent at the source to detect and track changes. These solutions require administrative changes and schema changes to the source server and database. If you cannot make such changes, then you need a solution that simply reads the data and schema from the source. SQL Sync Hub is such a solution. It does not require administrative or write access to the source database. (It can, however, greatly improve performance to create a timestamp column on large source tables so that an incremental copy is done).
 
--   ### Automatic Column Matching
+-   **Automatic Column Matching**
 
 SQL Sync Hub automatically copies columns wherever the source column name matches the target. The metadata is queried at run-time, so schema changes are detected with each run. Any non-matching columns are ignored. Implicit SQL Server conversion occurs if the datatypes of source and target differ. This differs from typical ETL tools such as SSIS or Informatica which require a developer to match columns and code any conversions.
 
 *Warning*: SQL Sync Hub may not be suitable for copying large tables without a single column primary key. See Modes of Copy for details.
 
-Dependencies
-------------
+##Dependencies
 
 Both the source and target servers must be Microsoft SQL Server 2012 or later versions.
 
@@ -45,8 +40,7 @@ The source server may be SQL Azure or any on premise edition of SQL Server.
 
 The target server can be any on premise edition of SQL Server, but *cannot* be SQL Azure because Azure currently does not allow cross database access.
 
-Modes of Copy
--------------
+##Modes of Copy
 
 SQL Sync Hub automatically copies columns wherever the source column name matches the target. The metadata is queried at run-time, so schema changes are detected with each run. Any non-matching columns are ignored.
 
@@ -73,8 +67,7 @@ without a single column primary key. If the framework is forced to do a
 simple copy on a large table, then this could cause problems with
 performance, log use and stability.
 
-Feature Summary
----------------
+##Feature Summary
 
 -   Uses a *Source* and *Target* paradigm.
 
@@ -125,14 +118,14 @@ It may be useful to create a timestamp column and corresponding index on large s
 Step 2: Create the databases
 ----------------------------
 
-Create the SQL Sync Hub database by running the downloaded scripts.
-Create database users required for development and administration.
+Three databases are involved:
+* The SQL Sync Hub database
+* The source database
+* The target database
 
-The source database will typically already exist – but of course it must be created if it does not exist.
+Create the SQL Sync Hub database by compiling the project and running the resultant DACPAC, or by running all the included scripts. (Later a pre-compiled DACPAC will be included, and a single SQL script for creation may be included).
 
-Create the target database, if it does not already exist.
-
-SQL Sync Hub does not provide any assistance for creating the source and target databases. Create these using whichever tools are most suitable for your environment. For example you could use Management Studio scripting, backup and restore, RedGate SQL Compare , or DACPAC/BACPAC.
+SQL Sync Hub framework does not provide any assistance for creating the source and target databases or tables. Tools such as Management Studio scripting or Red-Gate SQL Compare can be used to generate initial table structures in the target database.
 
 Step 3: Create the Linked Server
 --------------------------------
@@ -201,9 +194,9 @@ Step 7: Log trimming
 Records build up in the SqlSync.CopyTableLog table.
 
 To prevent the table from growing too large you should schedule a call to a statement such as:
-```
-DELETE FROM SqlSync.CopyTableLog WHERE LogDateTime < DATEADD(MONTH,-6,GETDATE())
-```
+
+    DELETE FROM SqlSync.CopyTableLog WHERE LogDateTime < DATEADD(MONTH,-6,GETDATE())
+
 Step 7: Monitoring
 ------------------
 
@@ -211,7 +204,7 @@ To achieve peace of mind without constantly looking, the system should
 generate alerts if something is wrong.
 
 Read the Monitoring Guide and develop a monitoring strategy. It should
-be possible to adapt the sample EmailAlert procedure to suit your
+be possible to adapt the sample _SqlSyncDemo.EmailAlert_ procedure to suit your
 requirements.
 
 Monitoring Guide
@@ -249,37 +242,26 @@ Often these differences are expected and tolerated. To suppress a column so it i
 
 There is a procedure SqlSync.SchemaChangeDetectIgnoreAllCurrentDifferences which will cause any current differences to be ignored by any future selects from the view.
 
-Troubleshooting Guide
-=====================
+#Troubleshooting Guide
 
-CopyTableControl
-----------------
+##CopyTableControl
 
 The main tool for observing the status is to query the table SqlSync.CopyTableControl. This table has one row for each target table that was ever a target in a call to SqlSync.CopyTable. The columns are:
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  TargetTable             Full name of the target table (key)
-  ----------------------- ----------------------------------------------------------------------------------------------------------------------------------------------
-  LastCopySourceTable     Full name of the sourvce table in the last call to SqlSync.CopyTable
 
-  UseIncrementalCopy      1 Indicates that an incremental copy will be performed if a rowversion column is detected in the source metadata.
-                          If this value is changed to zero the framework will not perform an incremental copy, but will instead always perform a batch or simple copy.
+| Column|Description|
+|:---|:---|
+|TargetTable |Full name of the target table (key) |
+|LastCopySourceTable|Full name of the source table in the last call to _SqlSync.CopyTable_|
+|UseIncrementalCopy|1 Indicates that an incremental copy will be performed if a rowversion column is detected in the source metadata.<br>If this value is changed to zero the framework will not perform an incremental copy, but will instead always perform a batch or simple copy.|
+|LastCopyDateTime|Time of last call to _SqlSync.CopyTable_|
+|LastCopyMaxRowVersion | Source database maximum timestamp (@@DBTS) at start of last call to _SqlSync.CopyTable_|
+|IsOK | 1 indicates that the last call to _SqlSync.CopyTable_ was successful.<br>0 indicates that the last call to _SqlSync.CopyTable_ has an error or is in progress.|
+|Message | Shows the captured SQL error message if IsOK is 0. Otherwise null.|
+| CountSrc | The count of rows in _LastCopySourceTable_. The count is made by the most recent call to _SqlSync.ReconcileAllTables_ |
+| CountTrg | The count of rows in TargetTable. The count is made by the most recent call to SqlSync.ReconcileAllTables
+| LastCountDateTime | The time of the most recent call to SqlSync.ReconcileAllTables|
 
-  LastCopyDateTime        Time of last call to SqlSync.CopyTable
-
-  LastCopyMaxRowVersion   Source database maximum timestamp (@@DBTS) at start of last call to SqlSync.CopyTable
-
-  IsOK                    1 indicates that the last call to SqlSync.CopyTable was successful.\
-                          0 indicates that the last call to SqlSync.CopyTable has an error or is in progress.
-
-  Message                 Shows the captured SQL error message if IsOK is 0. Otherwise null.
-
-  CountSrc                The count of rows in LastCopySourceTable. The count is made by the most recent call to SqlSync.ReconcileAllTables
-
-  CountTrg                The count of rows in TargetTable. The count is made by the most recent call to SqlSync.ReconcileAllTables
-
-  LastCountDateTime       The time of the most recent call to SqlSync.ReconcileAllTables
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 A typical query to highlight potential problem
 
@@ -289,18 +271,17 @@ SELECT * FROM SqlSync.CopyTableControl
 WHERE IsOK=0 OR CountSrc != CountTrg
 ```
 
-Copy Table Log
---------------
+##Copy Table Log
 
 This is a detailed log of operations. A record is created each time data is copied from a source to target and each time data is deleted from a target. A single call to SqlSync.CopyTable may result in many records inserted to SqlSync.CopyTableLog. The columns are:
 
-  CopyTableLogID   Sequential ID (key)
-  ---------------- ------------------------------------------
-  LogDateTime      Insertion date time
-  SourceTable      Fully qualified name of source table
-  TargetTable      Fully qualified name of target table
-  OperationCode    Insert, Merge, Truncate, Delete or Error
-  RowsAffected     Number of rows copied or deleted
-  Message          Error message where applicable
-
+|Column| Description|
+|---|------------|
+|CopyTableLogID|Sequential ID (key)|
+|LogDateTime  |Insertion date time|
+|SourceTable  |Fully qualified name of source table|
+|TargetTable  |Fully qualified name of target table|
+|OperationCode|Insert, Merge, Truncate, Delete or Error|
+|RowsAffected |Number of rows copied or deleted|
+|Message      |Error message where applicable|
 
