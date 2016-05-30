@@ -59,4 +59,10 @@ BEGIN
 		  ,@ExcludeColumns = '',
 		  @DoDeleteIncremental = @DoDeleteIncremental;
 	END
+
+	-- Create Constraints
+	DECLARE @CreateScript nvarchar(max);
+	SELECT TOP 1 @CreateScript = CreateScript FROM SqlSync.ForeignKeyScript WHERE DatabaseName= @TargetDatabase;
+	IF (LEN(ISNULL(@CreateScript,'')) > 0)
+		EXEC sp_executesql @CreateScript;
 END

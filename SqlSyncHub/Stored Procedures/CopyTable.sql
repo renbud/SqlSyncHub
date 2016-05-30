@@ -119,20 +119,20 @@ BEGIN
 	BEGIN TRY
 		IF @SourceTable IS NULL OR @TargetTable IS NULL
 			RAISERROR(N'CopyTable called with NULL parameters', -- Message text.
-			   16, -- Severity,
+			   16, -- Severity
 			   1 -- State
 			   ); 
 
 		IF (@TargetServerName IS NULL AND OBJECT_ID(@TargetTable) IS NULL)
 			RAISERROR(N'Table %s does not exist', -- Message text.
-				16, -- Severity,
+				16, -- Severity
 				1, -- State
 				@TargetTable
 				);
 
 		IF (@SourceServerName IS NULL AND OBJECT_ID(@SourceTable) IS NULL)
 			RAISERROR(N'View or table %s does not exist', -- Message text.
-				16, -- Severity,
+				10, -- Severity: If the source table cant be found its a warning not an error, because sometimes we look through all tables on target and dont want an error if its not on source
 				1, -- State
 				@SourceTable
 				); 
@@ -161,14 +161,14 @@ BEGIN
 
 		IF (@SourceCols IS NULL)
 			RAISERROR(N'Table %s does not exist on server %s',
-				16, -- Severity,
+				10, -- Severity:If the source table cant be found its a warning not an error, because sometimes we look through all tables on target and dont want an error if its not on source
 				1, -- State
 				@SourceTable, @SourceServerName
 				);
 
 		IF (@TargetCols IS NULL)
 			RAISERROR(N'View or table %s does not exist on server %s',
-				16, -- Severity,
+				16, -- Severity
 				1, -- State
 				@TargetTable, @TargetServerName
 				); 
