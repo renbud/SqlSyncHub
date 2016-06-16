@@ -117,6 +117,7 @@
     <None Include="SqlSyncHub.publish.xml" />
     <None Include="Wiki.md" />
     <None Include="..\README.md" />
+    <None Include="SqlPackage2CreateScript.ps1" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SqlSyncHub.refactorlog" />
