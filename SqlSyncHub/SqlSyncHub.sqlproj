@@ -117,9 +117,22 @@
     <None Include="SqlSyncHub.publish.xml" />
     <None Include="Wiki.md" />
     <None Include="..\README.md" />
-    <None Include="SqlPackage2CreateScript.ps1" />
+    <None Include="EmptySqlSyncHub.dacpac" />
+    <None Include="SqlPackageCreateScript.ps1" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="SqlSyncHub.refactorlog" />
   </ItemGroup>
+  <PropertyGroup>
+    <PowerShellExe Condition=" '$(PowerShellExe)'=='' ">$(WINDIR)\System32\WindowsPowerShell\v1.0\powershell.exe</PowerShellExe>
+    <ScriptLocation Condition=" '$(ScriptLocation)'=='' ">C:\Path With Spaces\LogDeploy.ps1</ScriptLocation>
+    <LogFileLocation Condition=" '$(LogFileLocation)'=='' ">C:\Path With Spaces\ContactManagerDeployLog.txt</LogFileLocation>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(PowerShellExe) –ExecutionPolicy RemoteSigned –file "$(ProjectDir)SqlPackageCreateScript.ps1"  -OutputPath '$(OutputPath)'</PostBuildEvent>
+  </PropertyGroup>
 </Project>

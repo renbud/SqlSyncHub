@@ -25,7 +25,7 @@ EXEC SqlSync.ReconcileAllTables
 Behaviour
 =========
 When tables are copied, columns are matched by name. Non-matching columns are ignored. Implicit data type conversion occurs only between compatible types.
-Source tables with a single column primary key and a row-version columns are copies incrementally after an initial full copy.
+Source tables with a single column primary key and a row-version columns are copied incrementally after an initial full copy.
 Source tables with a single column primary key are copied in batch mode.
 Source tables without a single column primary key (or whose primary key column is not supported natively by remoting) are copied in a simple unbatched mode.
 This mode may result in excessive use of resources such as log disk space and timeouts.
