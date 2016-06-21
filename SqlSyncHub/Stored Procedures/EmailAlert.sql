@@ -61,7 +61,7 @@ BEGIN
 	/****************************
 	Schema change detection
 	*****************************/
-	DECLARE @msgSchema VARCHAR(4000);
+	DECLARE @msgSchema VARCHAR(MAX);
 	;WITH CTE_SchemaChange AS (
 		SELECT '<tr><td>' + DatabasePair + '</td><td>' +
 			CASE WHEN TargetTable IS NULL
