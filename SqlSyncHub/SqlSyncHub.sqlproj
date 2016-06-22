@@ -115,7 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SqlSyncHub.publish.xml" />
-    <None Include="Wiki.md" />
     <None Include="..\README.md" />
     <None Include="EmptySqlSyncHub.dacpac" />
     <None Include="SqlPackageCreateScript.ps1" />
