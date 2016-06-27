@@ -12,6 +12,9 @@ CREATE PROCEDURE SqlSyncDemo.EmailAlert
 AS
 BEGIN
 	SET NOCOUNT ON;
+
+	EXEC SqlSyncDemo.ReconcileTables; -- Set up rowcounts in SqlSync.CopyTableControl
+
 	DECLARE @subj VARCHAR(8000)='SQL Sync Hub - ' + @@servername + '.' + DB_NAME() + ' – Notification / Alert';
 	DECLARE @mailprofile sysname = NULL;	-- Set a profile here, otherwise this uses the 1st available profile
 	DECLARE @msg VARCHAR(MAX) = null;

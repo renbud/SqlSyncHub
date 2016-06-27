@@ -27,6 +27,9 @@
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
     <Recovery>SIMPLE</Recovery>
     <IncludeSchemaNameInFileName>True</IncludeSchemaNameInFileName>
+    <Trustworthy>True</Trustworthy>
+    <CompatibilityMode>110</CompatibilityMode>
+    <EnableFullTextSearch>False</EnableFullTextSearch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -94,8 +97,6 @@
     <Build Include="Stored Procedures\GetObjectMetadata.sql" />
     <Build Include="Stored Procedures\RunViewOnDatabase.sql" />
     <Build Include="Stored Procedures\RethrowError.sql" />
-    <Build Include="Stored Procedures\CopyAzureTable.sql" />
-    <Build Include="Stored Procedures\AzureMain.sql" />
     <Build Include="Stored Procedures\ReconcileTables.sql" />
     <Build Include="Security\SqlSyncDemo.sql" />
     <Build Include="Security\SqlSync.sql" />

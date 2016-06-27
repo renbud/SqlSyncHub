@@ -78,9 +78,8 @@ CREATE PROCEDURE [SqlSync].[CopyTable] (
 	@TargetTable sysname,				-- target table on current database server using up to 3 part name
 	@ExcludeColumns nvarchar(1000)=NULL,	-- comma separated list of cols to exclude from copy
 	@DoDeleteIncremental BIT=0			-- Only delete records for incremental update if @DoDeleteIncremental=1
-)
+) WITH  EXECUTE AS OWNER
 AS
-
 BEGIN
 	SET NOCOUNT ON;
 
