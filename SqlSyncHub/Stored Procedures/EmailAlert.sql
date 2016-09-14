@@ -48,6 +48,7 @@ BEGIN
 	;WITH CTE_Dates AS (
 		SELECT MIN(LastCopyDateTime) AS KeyDate, 'Oldest Copy Date' AS KeyDateName
 		FROM SqlSync.CopyTableControl
+		WHERE CountSrc IS NOT NULL
 		UNION ALL
 		select  MIN(LastCountDateTime) AS KeyDate, 'Oldest Count Date' AS KeyDateName
 		FROM SqlSync.CopyTableControl
